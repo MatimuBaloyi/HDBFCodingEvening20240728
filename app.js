@@ -12,6 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const newUsernameInput = document.getElementById("new-username");
 
   let username = "";
+  let isBold = false;
+  let isItalic = false;
+  let typingTimeout;
 
   // Event listener for joining the chat
   joinBtn.addEventListener("click", () => {
@@ -49,3 +52,39 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+const sanitizeHTML = (str) => {
+  const tempDiv = document.createElement("div");
+  tempDiv.textContent = str;
+  return tempDiv.innerHTML;
+};
+
+const loadMessages = () => {
+  try {
+    const messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
+    messages.forEach((message) => {
+      displayMessage(message);
+    });
+  } catch (error) {
+    console.error("Error loading messages:", error);
+  }
+};
+
+const saveMessage = (message) => {
+  try {
+    let messages = JSON.parse(localStorage.getItem("chatMessages")) || [];
+    messages.push(message);
+    localStorage.setItem("chatMessages", JSON.stringify(messages));
+  } catch (error) {
+    console.error("Error saving message:", error);
+  }
+};
+
+const displayMessage = (message) => {
+  const messageElement = document.createElement("div");
+  messageElement.innerHTML = `[${message.timestamp}] <b>${sanitizeHTML(
+    message.username
+  )}:</b> ${sanitizeHTML(message.text)}`;
+  messagesDiv.appendChild(messageElement);
+  messagesDiv.scrollTop = messagesDiv.scrollHeight;
+};
