@@ -88,3 +88,77 @@ const displayMessage = (message) => {
   messagesDiv.appendChild(messageElement);
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 };
+
+const updateOnlineUsers = () => {
+  try {
+    const users = JSON.parse(localStorage.getItem("onlineUsers")) || [];
+    onlineUsersUl.innerHTML = "";
+    users.forEach((user) => {
+      const li = document.createElement("li");
+      li.textContent = user;
+      onlineUsersUl.appendChild(li);
+    });
+  } catch (error) {
+    console.error("Error updating online users:", error);
+  }
+};
+
+const notifyTyping = () => {
+  typingNotification.textContent = `${username} is typing...`;
+  typingNotification.style.display = "block";
+  clearTimeout(typingTimeout);
+  typingTimeout = setTimeout(() => {
+    typingNotification.style.display = "none";
+  }, 3000);
+};
+
+const simulateTypingNotification = (user) => {
+  typingNotification.textContent = `${user} is typing...`;
+  typingNotification.style.display = "block";
+  setTimeout(() => {
+    typingNotification.style.display = "none";
+  }, 3000);
+};
+
+const changeUsername = () => {
+  const newUsername = newUsernameInput.value.trim();
+  if (newUsername) {
+    try {
+      let onlineUsers = JSON.parse(localStorage.getItem("onlineUsers")) || [];
+      const index = onlineUsers.indexOf(username);
+      if (index > -1) {
+        onlineUsers[index] = newUsername;
+        localStorage.setItem("onlineUsers", JSON.stringify(onlineUsers));
+      }
+      username = newUsername;
+      localStorage.setItem("currentUser", username);
+      updateOnlineUsers();
+      newUsernameInput.value = "";
+    } catch (error) {
+      console.error("Error changing username:", error);
+    }
+  }
+};
+
+const applyFormatting = () => {
+  let message = messageInput.value;
+  if (isBold) {
+    message = `<b>${message}</b>`;
+  }
+  if (isItalic) {
+    message = `<i>${message}</i>`;
+  }
+  messageInput.value = message;
+};
+
+boldBtn.addEventListener("click", () => {
+  isBold = !isBold;
+  applyFormatting();
+});
+
+italicBtn.addEventListener("click", () => {
+  isItalic = !isItalic;
+  applyFormatting();
+});
+
+changeUsernameBtn.addEventListener("click", changeUsername);
