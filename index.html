@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chat Application</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="chat-app">
+      <!-- Login Section -->
+      <div id="login-section">
+        <h2>Login to Chat</h2>
+        <input type="text" id="username" placeholder="Enter your username" />
+        <button id="join-btn">Join Chat</button>
+      </div>
+
+      <!-- Chat Section -->
+      <div id="chat-section" style="display: none">
+        <div id="users-list">
+          <h3>Online Users</h3>
+          <ul id="online-users"></ul>
+        </div>
+
+        <div id="messages-section">
+          <!-- Change Username Section -->
+          <div id="change-username-section">
+            <input type="text" id="new-username" placeholder="New username" />
+            <button id="change-username-btn">Change Username</button>
+          </div>
+
+          <!-- Messages Display -->
+          <div id="messages"></div>
+
+          <!-- Typing Notification -->
+          <div
+            id="typing-notification"
+            style="color: #888; display: none"
+          ></div>
+
+          <!-- Message Input and Send Button -->
+          <input type="text" id="message-input" placeholder="Type a message" />
+          <button id="send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
